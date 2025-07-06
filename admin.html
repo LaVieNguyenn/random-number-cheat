@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Admin Cheat Panel</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>🔧 Admin Cheat</h1>
+    <p>Nhập số (1–9999) cách nhau bằng dấu “,” theo thứ tự muốn hiển thị:</p>
+    <textarea id="cheatInput" placeholder="Ví dụ: 1234, 999, 42"></textarea>
+    <button id="saveBtn">💾 Lưu Cheat</button>
+  </div>
+
+  <script>
+    const inp = document.getElementById('cheatInput');
+    const btn = document.getElementById('saveBtn');
+
+    // load sẵn nếu đã có
+    const saved = localStorage.getItem('cheatList');
+    if (saved) inp.value = JSON.parse(saved).join(', ');
+
+    btn.addEventListener('click', () => {
+      const list = inp.value
+        .split(',')
+        .map(s => parseInt(s.trim()))
+        .filter(n => !isNaN(n) && n >= 1 && n <= 9999);
+      localStorage.setItem('cheatList', JSON.stringify(list));
+      alert('✅ Đã lưu ' + list.length + ' số vào Cheat List');
+    });
+  </script>
+</body>
+</html>

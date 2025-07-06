@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Random Number</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Random Number</h1>
+
+    <!-- 4 ô ngang to đùng -->
+    <div id="digits" class="digits-container">
+      <div class="digit-box">0</div>
+      <div class="digit-box">0</div>
+      <div class="digit-box">0</div>
+      <div class="digit-box">0</div>
+    </div>
+
+    <button id="startBtn">🚀 Spin</button>
+  </div>
+
+  <script>
+    const boxes = document.querySelectorAll('.digit-box');
+    const btn = document.getElementById('startBtn');
+    const cheatList = JSON.parse(localStorage.getItem('cheatList') || '[]');
+    let cheatIdx = 0;
+
+    btn.addEventListener('click', () => {
+      const target = (cheatIdx < cheatList.length)
+        ? cheatList[cheatIdx++]
+        : Math.floor(Math.random() * 9999) + 1;
+      spin(target);
+    });
+
+    function spin(number) {
+      const s = String(number).padStart(4, '0').split('');
+      boxes.forEach((box, i) => {
+        box.classList.add('spin');
+        let ticks = 0;
+        const maxTicks = 15 + i * 8;
+        const iv = setInterval(() => {
+          ticks++;
+          box.textContent = Math.floor(Math.random() * 9) + 1;
+          if (ticks >= maxTicks) {
+            clearInterval(iv);
+            box.textContent = s[i];
+            box.classList.remove('spin');
+          }
+        }, 100);
+      });
+    }
+  </script>
+</body>
+</html>
